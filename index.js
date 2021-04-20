@@ -2,21 +2,24 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser')
 const morgan = require('morgan');
-const logger = morgan('tiny') //parameter into morgan tells morgan to give us just a tiny bit of info
 const helmet = require('helmet');
 const fetch = require('node-fetch')
+const es6Renderer = require('express-es6-template-engine')
+
 
 const host = '127.0.0.1';
 const port = 3000;
 
 const app = express();
 
+const logger = morgan('tiny') //parameter into morgan tells morgan to give us just a tiny bit of info
 app.use(logger);
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+}));
 app.use(express.static('public/css/style.css'));
 
 
-const es6Renderer = require('express-es6-template-engine')
 app.engine('html', es6Renderer) //telling app to register es6
 app.set('views', 'templates')
 app.set('view engine', 'html');
